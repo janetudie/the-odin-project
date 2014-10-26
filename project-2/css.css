@@ -1,0 +1,43 @@
+#header {
+	height: 100px;
+	position: relative;
+	margin: 10 auto;
+	margin-bottom: 10px;
+
+	text-align: center;
+	font-family: Helvetica;
+}
+
+#container {
+	position: relative;
+	height: 960px;
+	width: 960px;
+	margin: 30 auto;
+	background-color: black;
+
+	text-align: center;
+}
+
+#sketchstyle {
+	margin: 1em;
+}
+
+button {
+	background-color: #AAAAAA;
+	height: 3em;
+	width: 200px;
+	border-radius: 5px;
+}
+
+input {
+	height: 3em;
+}
+
+div.square {
+	display: inline-block;
+	margin: 0 auto;
+	background-color: #ffffff;
+	border-color: #000000;
+	opacity: 1;
+	outline: 1px solid black;
+}
