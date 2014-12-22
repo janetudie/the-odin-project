@@ -1,0 +1,10 @@
+--- !ruby/object:Hangman
+word_to_guess: pewee
+solved: false
+lives: 20
+guess:
+- _
+- _
+- _
+- _
+- _
