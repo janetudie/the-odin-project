@@ -33,7 +33,9 @@ class Piece
 	def is_valid_destination(curr_pos, dest, pawn_cond, player)
 
 		case self.class.to_s
-		when self.class.to_s == 'King' || "Knight"
+		when 'King'
+			return legal_moves(curr_pos).include?(dest)
+		when 'Knight'
 			return legal_moves(curr_pos).include?(dest)
 		when 'Bishop'
 			return within_diagonals(curr_pos, dest)
