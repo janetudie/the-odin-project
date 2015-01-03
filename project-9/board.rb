@@ -16,6 +16,8 @@ class Board
 		print_board(@board)
 	end
 
+
+	# SETUP AND HELPER METHODS
 	def fill_board
 		fill_row_pieces(0, 'b')
 		fill_row_pawn(1, 'b')
@@ -35,7 +37,6 @@ class Board
 		@board[row].each_with_index {|content, i| @board[row][i] = Pawn.new(color)}
 	end
 
-
 	def content(coordinates)
 		@board[coordinates[0]][coordinates[1]]
 	end
@@ -44,6 +45,86 @@ class Board
 		player == 'w' ? 'b' : 'w'
 	end
 
+	def find_king(player)
+		@board.each_with_index do |content, row|
+			content.each_with_index do |piece, col|
+				if piece.class.to_s == 'King' && piece.color == player
+					return [row, col]
+				end
+			end
+		end
+	end
+
+	def create_snapshot(original)
+		Marshal.load(Marshal.dump(original))
+	end
+
+
+	# METHODS TO MOVE PIECES AND REMEMBER TAKEN PIECES
+	def move_piece(curr_pos, dest, player)
+		@successful_move = false
+
+		board_snapshot = create_snapshot(@board)
+		taken_pieces_snapshot = create_snapshot(@taken_pieces)
+
+		content(curr_pos).class.to_s == 'Pawn' ? pawn_cond = check_pawn_condition(curr_pos, dest, player) : pawn_cond = nil
+
+		message = generate_message(curr_pos, dest, pawn_cond, player)
+
+		if !message
+			update_taken_pieces(dest) if taking_opponent_piece?(curr_pos, dest, player) # order is important here :(
+			move_action(curr_pos, dest)
+
+			self_in_check?(player)
+
+			if @in_check[player]
+				puts "Invalid move. You must not still be in check."
+				@board = board_snapshot
+				@taken_pieces = taken_pieces_snapshot
+			else
+				@successful_move = true
+				print_board
+				self_in_check?(get_opponent(player))
+			end
+		else
+			puts message
+		end
+
+	def generate_message(curr_pos, dest, pawn_cond, player)
+		if content(curr_pos).nil?
+			"The square you selected is empty. Try again."
+		elsif content(curr_pos).color != player
+			"This is not your piece. Try again."
+		else
+			if content(curr_pos).is_valid_destination(curr_pos, dest, pawn_cond, player)
+				if !content(dest).nil? && content(dest).color == content(curr_pos).color
+					"You already have a piece at that destination. Try again."
+				else
+					if free_to_move?(curr_pos, dest)
+						false
+					else
+						"You can't jump over other pieces. Try again."
+					end
+				end
+			else
+				"Move is not allowed. Try again."
+			end
+
+		end
+	end
+
+
+	def update_taken_pieces(dest)
+		@taken_pieces << content(dest)
+	end
+
+	def move_action(curr_pos, dest)
+		@board[dest[0]][dest[1]] = content(curr_pos)
+		@board[curr_pos[0]][curr_pos[1]] = nil
+	end
+
+
+	# METHODS TO CHECK VALIDITY OF MOVES
 	def self_in_check?(player)
 
 		@in_check[player] = false
@@ -64,65 +145,21 @@ class Board
 
 	end
 
-	def find_king(player)
-		@board.each_with_index do |content, row|
-			content.each_with_index do |piece, col|
-				if piece.class.to_s == 'King' && piece.color == player
-					return [row, col]
-				end
-			end
+	def free_path?(curr_pos, dest)
+		# checks if squares between curr_pos and dest has a piece between it
+		# TODO : separate finding increment
+
+		diff = vector_operation(dest, curr_pos, -1)
+		abs_diff = diff.map {|x| x.abs}
+		increment = diff.collect {|x| abs_diff.max != 0 ? x / abs_diff.max : x}
+		curr_pos = vector_operation(curr_pos, increment)
+
+		while curr_pos != dest
+			return false if !content(curr_pos).nil?
+			curr_pos = vector_operation(curr_pos, increment)
 		end
-	end
 
-
-	def create_snapshot(original)
-		Marshal.load(Marshal.dump(original))
-	end
-
-	def move_piece(curr_pos, dest, player)
-		@successful_move = false
-
-		# need to create a board snapshot
-		board_snapshot = create_snapshot(@board)
-		taken_pieces_snapshot = create_snapshot(@taken_pieces)
-
-		content(curr_pos).class.to_s == 'Pawn' ? pawn_cond = check_pawn_condition(curr_pos, dest, player) : pawn_cond = nil
-
-		if content(curr_pos).nil?
-			puts "The square you selected is empty. Try again."
-		else
-			if content(curr_pos).color == player
-				if content(curr_pos).is_valid_destination(curr_pos, dest, pawn_cond, player)
-					if !content(dest).nil? && content(dest).color == content(curr_pos).color # make a function
-						puts "You already have a piece at that destination. Try again."
-					else 
-						if free_to_move?(curr_pos, dest)
-							update_taken_pieces(dest) if taking_opponent_piece?(curr_pos, dest, player) # order is important here :(
-							move_action(curr_pos, dest)
-
-							self_in_check?(player)
-
-							if @in_check[player]
-								puts "Invalid move. You must not still be in check."
-								@board = board_snapshot
-								@taken_pieces = taken_pieces_snapshot
-							else
-								@successful_move = true
-								print_board
-								self_in_check?(get_opponent(player))
-							end
-
-						else
-							puts "You can't jump over other pieces. Try again."
-						end
-					end
-				else
-					puts "Invalid move. Try again."
-				end
-			else
-				puts "This is not your piece. Try again."
-			end
-		end
+		true
 	end
 
 	def free_to_move?(curr_pos, dest)
@@ -166,32 +203,7 @@ class Board
 		end
 	end
 
-	def free_path?(curr_pos, dest)
-		# checks if squares between curr_pos and dest has a piece between it
-		# TODO : separate finding increment
-
-		diff = vector_operation(dest, curr_pos, -1)
-		abs_diff = diff.map {|x| x.abs}
-		increment = diff.collect {|x| abs_diff.max != 0 ? x / abs_diff.max : x}
-		curr_pos = vector_operation(curr_pos, increment)
-
-		while curr_pos != dest
-			return false if !content(curr_pos).nil?
-			curr_pos = vector_operation(curr_pos, increment)
-		end
-
-		true
-	end
-
-	def update_taken_pieces(dest)
-		@taken_pieces << content(dest)
-	end
-
-	def move_action(curr_pos, dest)
-		@board[dest[0]][dest[1]] = content(curr_pos)
-		@board[curr_pos[0]][curr_pos[1]] = nil
-	end
-
+	# METHODS TO DISPLAY BOARD ON TERMINAL
 	def print_board(board = @board)
 		puts '.  a b c d e f g h'
 		board.each_with_index do |row, ri|

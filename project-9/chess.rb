@@ -34,7 +34,6 @@ class Game
 			if @state == :in_play 
 				@curr_player, @other_player = @other_player, @curr_player
 				@turns += 1
-
 				request_input
 			else
 				puts "The game has ended!" # end message based on winner or stalemate
