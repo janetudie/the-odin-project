@@ -4,14 +4,16 @@ class Board
 
 	# displays the chessboard and controls the pieces' movements
 
-	attr_accessor :board, :taken_pieces, :successful_move, :in_check, :curr_player, :other_player
+	attr_accessor :board, :taken_pieces, :successful_move, :in_check
 
 	def initialize
 		@board = Array.new(8) {|i| Array.new(8)}
 		@taken_pieces = []
+		@in_check = {'w' => false, 'b' => false}
+
 		fill_board
 
-		print_board
+		print_board(@board)
 	end
 
 	def fill_board
@@ -42,6 +44,26 @@ class Board
 		player == 'w' ? 'b' : 'w'
 	end
 
+	def self_in_check?(player)
+
+		@in_check[player] = false
+
+		opponent = get_opponent(player)
+
+		king_location = find_king(player)
+
+		@board.each_with_index do |content, row|
+			content.each_with_index do |piece, col|
+				if !piece.nil? && piece.color != player
+					if piece.is_valid_destination([row, col], king_location, 'taking', opponent) && free_to_move?([row, col], king_location)
+						@in_check[player] = true
+					end
+				end
+			end
+		end
+
+	end
+
 	def find_king(player)
 		@board.each_with_index do |content, row|
 			content.each_with_index do |piece, col|
@@ -52,10 +74,17 @@ class Board
 		end
 	end
 
+
+	def create_snapshot(original)
+		Marshal.load(Marshal.dump(original))
+	end
+
 	def move_piece(curr_pos, dest, player)
 		@successful_move = false
 
-		temp_board = @board.dup
+		# need to create a board snapshot
+		board_snapshot = create_snapshot(@board)
+		taken_pieces_snapshot = create_snapshot(@taken_pieces)
 
 		content(curr_pos).class.to_s == 'Pawn' ? pawn_cond = check_pawn_condition(curr_pos, dest, player) : pawn_cond = nil
 
@@ -71,15 +100,18 @@ class Board
 							update_taken_pieces(dest) if taking_opponent_piece?(curr_pos, dest, player) # order is important here :(
 							move_action(curr_pos, dest)
 
-							puts "Self in check: " + self_in_check?(player).to_s
-							if !self_in_check?(player) # check if the move puts us in check
-								@successful_move = true
-								other_in_check?(player)
+							self_in_check?(player)
+
+							if @in_check[player]
+								puts "Invalid move. You must not still be in check."
+								@board = board_snapshot
+								@taken_pieces = taken_pieces_snapshot
 							else
-								puts "Invalid move. You must get out of the check!"
-								@board = temp_board.dup
+								@successful_move = true
+								print_board
+								self_in_check?(get_opponent(player))
 							end
-							
+
 						else
 							puts "You can't jump over other pieces. Try again."
 						end
@@ -91,10 +123,6 @@ class Board
 				puts "This is not your piece. Try again."
 			end
 		end
-	end
-
-	def self_in_check?(player)
-		!other_in_check?(get_opponent(player))
 	end
 
 	def free_to_move?(curr_pos, dest)
@@ -160,17 +188,13 @@ class Board
 	end
 
 	def move_action(curr_pos, dest)
-
 		@board[dest[0]][dest[1]] = content(curr_pos)
 		@board[curr_pos[0]][curr_pos[1]] = nil
-
-		print "Move is successful." if @successful_move
-		print_board
 	end
 
-	def print_board
+	def print_board(board = @board)
 		puts '.  a b c d e f g h'
-		@board.each_with_index do |row, ri|
+		board.each_with_index do |row, ri|
 			print "#{ri + 1}  "
 			row.each_with_index do |col, ci|
 				(col.nil? ? (ri.even? ? (ci.even? ? whitesq : blacksq) : (ci.even? ? blacksq : whitesq)) : (print col))

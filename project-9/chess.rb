@@ -41,55 +41,9 @@ class Game
 			end
 		end
 
-		def self_in_check?(player)
-
-		@in_check = false
-
-		opponent = get_opponent(player)
-
-		opponent_king_location = find_king(opponent)
-
-		@board.each_with_index do |content, row|
-			content.each_with_index do |piece, col|
-				if !piece.nil? && piece.color == player
-					if piece.is_valid_destination([row, col], opponent_king_location, 'taking', player) && free_to_move?([row, col], opponent_king_location)
-						@in_check = true
-					end
-				end
-			end
-		end
-
-		puts 'Check!' if @in_check
-
-	end
-
-=begin
-	puts "Self in check: " + self_in_check?(player).to_s
-							if !self_in_check?(player) # check if the move puts us in check
-								@successful_move = true
-								other_in_check?(player)
-							else
-								puts "Invalid move. You must get out of the check!"
-								@board = temp_board.dup
-							end
-=end
-
-
-	def find_king(player)
-		@board.each_with_index do |content, row|
-			content.each_with_index do |piece, col|
-				if piece.class.to_s == 'King' && piece.color == player
-					return [row, col]
-				end
-			end
-		end
-	end
-
-
-
 
 		def opponent_check
-			@board.in_check
+			@board.in_check[@other_player.color]
 		end
 
 		def update_opponent_status
@@ -127,6 +81,7 @@ class Game
 		def turn_to_index(input)
 			[(input[1].to_i - 1), (input[0].ord - 65)]
 		end
+	
 
 end
 
