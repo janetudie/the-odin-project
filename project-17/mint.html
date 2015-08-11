@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<link href="mint.css" rel="stylesheet" type="text/css">
+	</head>
+
+	<body>
+		<section id="page-container">
+			<div id="logo-and-tabs">
+				<div id="logo">
+				</div>
+				<div id="tabs">
+					<ul class="tabs">
+						<li><a href="#" id="signup">Sign up</a></li>
+						<li><a href="#" id="login">Log in</a></li>
+					</ul>
+
+				</div>
+			</div>
+
+			<div id="form-container">
+				<h1 id="form-title">
+					Create a new account
+				</h1>
+				<div class="left-col">
+					<form id="signup-form" method="post" action>
+						<ol class="signup">
+							<li class="email">
+								<label for="signup-form-email">Your Email</label>
+								<input id="signup-form-email" name="email" maxlength="255" type="text" value>
+							</li>
+							<li class="email2">
+								<label for="signup-form-email">Confirm Email</label>
+								<input id="signup-form-email" name="email2" maxlength="255" type="text" value>
+							</li>			
+							<li class="country">
+								<label for="signup-form-country">Country</label>
+								<select id="signup-form-country" name="country">
+									<optgroup class="available-countries">
+										<option value="US">United States</option>
+										<option value="CA">Canada</option>
+									</optgroup>
+								</select>
+							</li>
+							<li class="zipcode">
+								<label for="signup-form-zipcode">Zipcode</label>
+								<input id="signup-form-zipcode" name="zipcode" maxlength="5" type="text" value>
+							</li>		
+							<li class="password">
+								<label for="signup-form-password">Password</label>
+								<input id="signup-form-password" name="password" maxlength="255" type="password" value>
+							</li>		
+							<li class="password2">
+								<label for="signup-form-password">Confirm Password</label>
+								<input id="signup-form-password" name="password2" maxlength="255" type="password" value>
+							</li>		
+							<li class="terms-checkbox">
+								<input id="signup-form-terms" name="terms" type="checkbox" value="">
+								<label id="terms-label" for="form-signup-terms">Yes, I agree to the Mint <a href="#">Terms of Use</a>.</label>
+							</li>
+						</ol>
+						<div class="button">
+							<input type="submit" class="btn btn-primary signup-submit" value="Sign up">
+						</div>
+					</form>
+				</div>
+
+				<div id="right-col">
+					<div id="tips">
+						<h2>Why you'll love it</h2>
+						<ul>
+							<li>See all your accounts in one place</li>
+							<li>Set a budget and pay down your debt</li>
+							<li>Find the best ways to grow your money</li>
+							<li>Stay <a href="http://www.mint.com/privacy/" id="signup-privacy">safe and secure</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</section>
+
+		<footer>
+			<div class="secondary-links">
+				<a id="footer-help" href="#">Support Community</a>
+				<a id="footer-terms" href="#">Terms of Use</a>
+				<a id="footer-privacy" href="#">Privacy</a>
+				<a id="footer-legal" href="#">Legal and Trademark Notices</a>
+				<a id="footer-intuit" href="#">About Intuit</a>
+			</div>
+
+			<div class="security-links">
+				<a id="footer-security-norton" href="#"></a>
+				<a id="footer-security-trustee" href="#"></a>
+			</div>
+
+			<p class="copyright">
+			&copy; 2015 Intuit, Inc.
+			</p>
+		</footer>
+	</body>
+
+
+</html>

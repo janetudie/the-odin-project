@@ -4,17 +4,19 @@ class Board
 
 	# displays the chessboard and controls the pieces' movements
 
-	attr_accessor :board, :taken_pieces, :successful_move, :in_check
+	attr_accessor :board, :taken_pieces, :successful_move, :in_check, :state
 
 	def initialize
 		@board = Array.new(8) {|i| Array.new(8)}
 		@taken_pieces = []
 		@in_check = {'w' => false, 'b' => false}
+		@state = :in_play
 
 		fill_board
 
 		print_board(@board)
 	end
+
 
 
 	# SETUP AND HELPER METHODS
@@ -23,13 +25,10 @@ class Board
 		fill_row_pawn(1, 'b')
 		fill_row_pieces(7, 'w')
 		fill_row_pawn(6, 'w')
-
-		@board[4][0] = King.new('b')
-		@board[7][3] = King.new('w')
 	end
 
 	def fill_row_pieces(row, color)
-		@board[row] = [Rook.new(color), Knight.new(color), Bishop.new(color), Bishop.new(color),
+		@board[row] = [Rook.new(color), Knight.new(color), Bishop.new(color), King.new(color),
 					Queen.new(color), Bishop.new(color), Knight.new(color), Rook.new(color)]
 	end
 
@@ -55,6 +54,51 @@ class Board
 		end
 	end
 
+	def checkmate?(player)
+		if find_king(player).nil? || no_safe_king_moves?(player)
+			checkmate
+		end
+
+	end
+
+	def update_player_status(player)
+		if checkmate?(player)
+			endgame
+		else
+			@in_check[player] = self_in_check?(player)
+		end
+	end
+
+	def endgame
+		@status = :mated
+	end
+
+	def no_safe_king_moves?(player)
+
+		# for all possible king moves, check if any opponent pieces will eat it
+
+		# for each possible moves, create shallow copies with Kings in each square
+		# then check for checks with each Kings
+		# if there are no checks, return false
+		# else if all of the Kings possible moves are in check, return true
+		king_location = find_king(player)
+		possible_moves = content(king_location).legal_moves(king_location)
+
+		board_snapshot = @board.clone
+		board_snapshot[king_location[0]][king_location[1]] = nil
+
+		possible_moves.each do |moves|
+			board_snapshot[moves[0]][moves[1]] = King.new(player)
+			if !self_in_check?(player, board_snapshot)
+				return false
+			else
+				board_snapshot[moves[0]][moves[1]] = nil
+			end
+		end
+
+		return true
+	end
+
 	def create_snapshot(original)
 		Marshal.load(Marshal.dump(original))
 	end
@@ -75,22 +119,22 @@ class Board
 			update_taken_pieces(dest) if taking_opponent_piece?(curr_pos, dest, player) # order is important here :(
 			move_action(curr_pos, dest)
 
-			self_in_check?(player)
 
-			if @in_check[player]
+			if self_in_check?(player)
 				puts "Invalid move. You must not still be in check."
 				@board = board_snapshot
 				@taken_pieces = taken_pieces_snapshot
 			else
 				@successful_move = true
 				print_board
-				self_in_check?(get_opponent(player))
+				update_player_status(get_opponent(player))
 			end
 		else
 			puts message
 		end
+	end
 
-	def generate_message(curr_pos, dest, pawn_cond, player)
+	def generate_message(curr_pos, dest, pawn_cond, player, shadow_checking = false)
 		if content(curr_pos).nil?
 			"The square you selected is empty. Try again."
 		elsif content(curr_pos).color != player
@@ -101,7 +145,7 @@ class Board
 					"You already have a piece at that destination. Try again."
 				else
 					if free_to_move?(curr_pos, dest)
-						false
+						return nil
 					else
 						"You can't jump over other pieces. Try again."
 					end
@@ -125,23 +169,23 @@ class Board
 
 
 	# METHODS TO CHECK VALIDITY OF MOVES
-	def self_in_check?(player)
-
-		@in_check[player] = false
+	def self_in_check?(player, board = @board)
 
 		opponent = get_opponent(player)
 
 		king_location = find_king(player)
 
-		@board.each_with_index do |content, row|
+		board.each_with_index do |content, row|
 			content.each_with_index do |piece, col|
 				if !piece.nil? && piece.color != player
 					if piece.is_valid_destination([row, col], king_location, 'taking', opponent) && free_to_move?([row, col], king_location)
-						@in_check[player] = true
+						return true
 					end
 				end
 			end
 		end
+
+		return false
 
 	end
 
@@ -215,13 +259,13 @@ class Board
 			puts
 		end
 
-		puts "Taken pieces: " 
 		print_taken_pieces
 		puts
 
 	end
 
 	def print_taken_pieces
+		puts "Taken pieces: " 
 		@taken_pieces.each {|piece| print piece}
 	end
 

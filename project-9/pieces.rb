@@ -6,8 +6,6 @@ class Piece
 				'Rook' => {w: "\u2656", b: "\u265C"}, 'Queen' => {w: "\u2655", b: "\u265B"},
 				'Bishop' => {w: "\u2657", b: "\u265D"}, 'Pawn' => {w: "\u2659", b: "\u265F"}}
 
-	hash = {'King' => 'abcs'}
-
 	def initialize(color)
 		@color = color
 	end
@@ -60,9 +58,7 @@ end
 
 
 class King < Piece
-
-	attr_reader :symbol
-
+	
 	def legal_moves(curr_pos)
 		steps = [-1, 0, 1].repeated_permutation(2).to_a.reject {|move| move == [0, 0]}
 		valid_positions(curr_pos, steps)
@@ -94,6 +90,8 @@ class Pawn < Piece
 
 		case pawn_cond
 		when 'taking'
+			steps = [[x, 1], [x, -1]]
+		when 'en passant'
 			steps = [[x, 1], [x, -1]]
 		when 'starting'
 			steps = [[x * 2, 0], [x, 0]]

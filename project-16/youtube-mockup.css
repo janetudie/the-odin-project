@@ -1,0 +1,736 @@
+
+
+body {
+	margin: 0;
+	background: #EAEAEA;
+	color: #222;
+  font-family: arial, sans-serif;
+
+  
+}
+
+#navbar-positioner {
+	position: fixed;
+	height: 50px;
+	width: 100%;
+	border-bottom: 1px solid #e8e8e8;
+	background: #fff;
+	z-index: 100;
+
+	top: 0px;
+
+}
+
+#navbar-container {
+	position: fixed;
+	height: 30px;
+	background: #fff;
+	margin: 10px 30px 0 30px;
+	border: 0;
+	/*padding: 7px 0px 8px 0px;*/
+}
+
+#youtube-icon-container {
+	width: 100px;
+	background: #fff;
+	height: 30px;
+}
+
+#button-navbar {
+	position: fixed;
+	height: 28px;
+	width: 46px;
+	border-radius: 2px;
+	background: #fff;
+
+	left: 120px;
+	top: 10px;
+
+}
+
+#button-navbar:hover {
+	background: #f8f8f8;
+	border: 1px solid #d3d3d3;
+}
+
+#button-navbar-icon {
+	display: inline-block;
+	background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vflQZQodz.webp) -591px -75px;
+  background-size: auto;
+  width: 16px;
+  height: 16px;
+  
+  margin: 6px 0 0 10px;
+}
+
+#button-navbar-icon-arrow {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 3px 3px 0 3px;
+	border-color: #b8b8b8 transparent transparent transparent;
+	
+  margin: 5px 0 6px;
+
+}
+
+#search-bar {
+	position: absolute;
+	top: 0;
+	left: 200px;
+	height: 30px;
+	width: 650px;
+	background: #fff;
+}
+
+#search-bar input[type=text] {
+	left: 200px;
+	width: 583px;
+	height: 30px;
+	border: solid 1px #ddd;
+  box-shadow: inset 0 1px 1px #ddd;
+}
+
+#search-bar input[type=submit] {
+	background: transparent url(https://raw.githubusercontent.com/hmfoster/embedded-youtube/master/images/question_mark.png) no-repeat;
+	background-color: #f8f8f8;
+	background-position: center;
+	border: 1px solid #d3d3d3;
+	position: absolute;
+	width: 65px;
+	height: 30px;
+	left: 583px;
+}
+
+#upload-button {
+	position: fixed;
+	width: 56px;
+	height: 28px;
+	background-color: #f8f8f8;
+	border: 1px solid #d3d3d3;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 28px;   
+	right: 80px;
+	top: 10px;
+	font-weight: bold;
+  font-size: 11px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);	
+}
+
+#user-image {
+	position: fixed;
+	width: 27px;
+	height: 27px;
+	border-radius: 50%;
+	float: right;
+	top: 11px;
+	right: 30px;
+}
+
+#page-container {
+	position: relative; /* absolute to the body */
+	width: 100%;
+	height: auto;
+	margin-top: 50px;
+
+	display: table;
+	
+	/*
+		this is an alternative to ordering in the html file
+	*/
+}
+
+.col-1-2 {
+	height: 100%;
+	background: #EAEAEA;
+	width: 66.7%;
+	display: inline-block;
+	
+}
+
+.vid-container {
+	position: relative;
+	margin: 10px;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+	min-width: 600px;
+
+}
+
+.vid-container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.vid-title-container {
+	background: #fff;
+	margin: 10px;
+	height: 146px;
+	padding: 15px;
+	padding-bottom: 0px;
+	min-width: 600px;
+	box-shadow: 0 1px 1px #ddd;
+}
+
+h1 {
+	background: #fff;
+	font-size: 24px;
+	font-weight: normal;
+	margin-bottom: 10px;
+	margin-top: 0px;
+	height: 28px;
+	overflow: hidden;
+}
+
+
+.vid-author {
+	height: 58px;
+	padding-bottom: 2px;
+	border-bottom: 1px solid #e8e8e8;
+}
+
+.vid-author img {
+	float: left;
+  height: 48px;
+  margin-right: 10px;
+  width: 48px;
+}
+
+.vid-author-name {
+	margin-bottom: 0px;
+	font-size: 13px;
+  font-weight: bold;
+}
+
+#subscription-container {
+	position: absolute;
+	width: 135px;
+	height: 25px;
+	background-color: #e62117;
+	display: inline-block;
+	margin: 5px 0 0 0;
+	
+}
+
+#subscribe-icon {
+	width: 20px;
+	height: 13px;
+	margin: 6px 5px 5.5px 5px;
+}
+
+a {
+	text-decoration: none;
+}
+
+#subscribe {
+	height: 25px;
+	width: 60px;
+	margin: 5px 0px 0px 0px;
+	font-size: 13px;
+	color: #fff;
+	display: inline-block;
+}
+
+#subscriber-count {
+	position: relative;
+	display: inline-block;
+	background: #fafafa;
+	border: 1px solid #ccc;
+	height: 17px;
+	width: 40px;
+	font-size: 11px;
+	color: #767676;
+  font-size: 11px;
+  text-align: center;
+	padding: 6px 0 0 0px;
+	float: right;
+}
+
+#subscriber-count span {
+	margin: 0;
+}
+
+#views-likes {
+	width: 160px;
+	height: 50px;
+	display: inline-block;
+	float: right;
+}
+
+#vid-view-count {
+	width: 160px;
+	height: 24px;
+
+
+	color: rgb(102, 102, 102);
+	font-size: 19px;
+	text-align: right;
+	margin-top: 20px;
+}
+
+#likes-bar {
+	
+	width: 160px;
+	height: 2px;
+	background-color: #167ac6;
+
+	display: inline-block;
+	
+}
+
+.vid-action {
+	height: 34px;
+	padding-top: 5px;
+}
+
+.vid-action-buttons {
+	height: 28px;
+	width: 300px;
+	margin-bottom: 0;
+	
+}
+
+.vid-action-buttons {
+	float: left;
+	padding: 2px 8px 0 8px;
+	display: inline-block;
+	
+
+	font-size: 11px;
+	font-weight: bold;
+
+	
+}
+
+.action-menu {
+	width: 75px;
+	height: 28px;
+	display: inline-block;
+
+	color: #767676;
+}
+
+.action-menu:hover {
+	color: #333;
+}
+
+.action-icon {
+	background-size: auto;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  display: inline-block;
+
+  margin-right: 2px;
+  opacity: 0.5;
+}
+
+.add-icon {
+	background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vflQZQodz.webp) -815px -239px;
+
+}
+
+span.add {
+	line-height: 28px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.share-icon {
+	background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vflQZQodz.webp) -261px -13px;;
+}
+
+span.share {
+	line-height: 28px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+
+.more-icon {
+  background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vflQZQodz.webp) -529px -180px;
+	
+}
+
+
+#likes-dislikes-container {
+	width: 100px;
+	height: 30px;
+	
+	float: right;
+}
+
+.ld-buttons {
+	width: 45px;
+	height: 28px;
+	display: inline-block;
+	background-color: #fff;
+	
+	margin-left: 2px;
+	text-align: right;
+}
+
+.ld-num {
+	font-size: 11px;
+	color: #767676;
+
+	line-height: 30px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.thumbs-up {
+	background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vflQZQodz.webp) -289px -13px;
+}
+
+.thumbs-down {
+	background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vflQZQodz.webp) -461px -241px;
+}
+
+
+h5 {
+  font-size: 13px;
+  font-weight: bold;
+ }
+
+
+.vid-details {
+	margin: 10px;
+	height: auto;
+	padding: 15px;
+	padding-bottom: 10px;
+	background: #fff;
+	box-shadow: 0 1px 1px #ddd;
+}
+
+#published-on {
+	margin: 0; 
+}
+
+#details-text {
+	font-size: 13px;
+}
+
+
+.show-more {
+	margin-bottom: 0;
+	width: 100%;
+	padding-top: 8px;
+	background-color: #fff;
+	text-align: center;
+	font-size: 11px;
+	font-weight: bold;
+	color:#767676;
+
+	border-top: 1px solid #e8e8e8;
+}
+
+
+.comments {
+	background: #fff;
+	margin: 10px;
+	height: auto;
+	padding: 15px;
+	box-shadow: 0 1px 1px #ddd;
+
+}
+
+.comments h4 {
+	margin: 0 0 15px 0;
+	font-size: 13px;
+	color:#666;
+}
+
+.comment-user-box {
+	width: 100%;
+	height: 48px;
+	position: relative;
+}
+
+img.comment-user-icon {
+	position: absolute;
+	width: 48px;
+	height: 48px;
+	display: inline-block;
+}
+
+.callout-out {
+	position: absolute;
+	left: 52px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 14px 14px 0;
+	border-color: transparent #d5d5d5 transparent transparent;
+}
+
+.callout-in {
+	position: absolute;
+	left: 54px;
+	top: 1px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 12px 12px 0;
+	border-color: transparent #fff transparent transparent;
+}
+
+.comment-input-box {
+	background-color: #abcdfe;
+	width: 513px;
+	margin-left: 65px;
+	margin-top: 0px;
+	height: 35px;
+	display: inline-block;
+
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+  border-top: 1px solid #d5d5d5;
+  min-height: 35px;
+  background-color: #fff;
+  border-radius: 2px;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 13px;
+  text-align: left;
+  box-shadow: none;
+}
+
+span.share-your-thoughts {
+	margin-top: 3px;
+}
+
+/* SIDEBAR */
+
+
+.col-3 {
+	position: absolute;
+	width: 33.3%;
+	height: auto;
+	background: #EAEAEA;
+	float: right;
+	display: inline-block;
+
+	top: 0px;
+	
+}
+
+
+.aside-container {
+	position: relative;
+	background: #fff;
+	margin: 10px 0 -10px 0;
+	height: 100%;
+	overflow: hidden;
+	box-shadow: 0 1px 1px #ddd;
+}
+
+.suggestions-container {
+	background: #fff;
+	margin: 10px;
+	height: 100%;
+	padding-left: 5px;
+	
+}
+
+.suggestions-list {
+	padding-left: 0px;
+}
+
+h5.up-next {
+	display: inline-block;
+	margin: 5px 0 0 0;
+}
+
+#autoplay-container {
+	float: right;
+	display: inline-block;
+	width: 150px;
+  height: 18px;
+  margin: 5px 0 0 0;
+}
+
+.autoplay-title {
+	display: inline-block;
+  color: #767676;
+  margin: 0 0 0 25px;
+}
+
+#autoplay-toggle {
+	float: right;
+	width: 58px;
+  height: 15px;
+  
+  
+}
+
+ul {
+	display: block;
+}
+
+li.suggested-vid {
+	list-style: none;
+	margin: 0;
+	display: block;
+	height: 70px;
+	padding-bottom: 15px;
+}
+
+li.suggested-vid:first-child {
+	border-bottom: 1px solid #e8e8e8;
+	margin-bottom: 15px;
+}
+
+.suggested-vid img {
+	height: 70px;
+	width: 120px;
+	object-fit: cover;
+	float: left;
+	padding-right: 8px;
+}
+
+.suggested-vid p {
+	color: #767676;
+  font-size: 11px;
+  margin: 3px;
+}
+
+.suggested-vid a {
+	color: #333;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
+/* FOOTER */
+
+footer {
+	height: 114px;
+	padding: 15 30;
+	width: 100%;
+	background: #fff;
+
+	display: block;
+  bottom:0;
+
+  margin-top: 70px;
+}
+
+#footer-main {
+	position: relative;
+	height: 30px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #e2e2e2;
+}
+
+#footer-main-links {
+	margin: 0;
+	padding: 0;
+	vertical-align: center;
+}
+
+#footer-logo {
+	display: inline-block;
+	height: 30px;
+	width: 72px;
+	background: no-repeat url(https://s.ytimg.com/yts/imgbin/www-hitchhiker-vfl1WP9DO.webp) -249px -52px;
+	margin-right: 14px;
+}
+
+ul#footer-main-links {
+	display: inline-block;
+	padding: 0;
+}
+
+.footer-main-button {
+	box-sizing: border-box;
+
+	display: inline-block;
+  background: #f8f8f8;
+  color: #333;
+	height: 28px;
+  border: solid 1px #d3d3d3;
+  padding: 0 10px;
+  outline: 0;
+  font-weight: 500;
+  font-size: 11px;
+  text-decoration: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  line-height: normal;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);	
+
+  position: relative;
+	bottom: 11px;
+}
+
+#footer-main-links li {
+	display: inline-block;
+
+}
+
+a.footer-main-button {
+	padding-top: 7px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+#footer-links {
+	height: 38px;
+	padding: 15 0;
+}
+
+#footer-links-primary {
+	padding-left: 0;
+	height: 15px;
+	margin: 0;
+	margin-bottom: 8px;
+	display: inline-block;
+	list-style: none;
+}
+
+#footer-links-primary li {
+	display: inline-block;
+	font-size: 13px;
+	margin-right: 15px;
+
+}
+
+#footer-links-primary li a {
+		color: #333;
+		font-weight: bold;
+	}
+
+
+#footer-links-secondary {
+	padding-left: 0;
+	height: 15px;
+	margin: 0;
+	list-style: none;
+}
+
+#footer-links-secondary li {
+	display: inline-block;
+	font-size: 11px;
+	margin-right: 15px;
+
+}
+
+#footer-links-secondary li a {
+		color: #666;
+		font-weight: bold;
+	}
